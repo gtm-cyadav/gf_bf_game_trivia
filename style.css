@@ -1,0 +1,226 @@
+:root {
+  --bg: #14100e;
+  --bg-2: #1e1815;
+  --card: #241d19;
+  --line: #3a2f28;
+  --text: #f5ece4;
+  --muted: #a89b90;
+  --saffron: #ff8a3d;
+  --saffron-dim: #d96f2b;
+  --green: #3ddc84;
+  --red: #ff5a5a;
+  --gold: #ffcc66;
+  --radius: 14px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(900px 500px at 50% -10%, #2c211a 0%, transparent 60%),
+    var(--bg);
+  color: var(--text);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  display: flex;
+  justify-content: center;
+  padding: 24px 16px 48px;
+}
+
+.wrap { width: 100%; max-width: 560px; }
+
+.screen { display: none; }
+.screen.active { display: block; animation: rise .25s ease; }
+@keyframes rise { from { opacity: 0; transform: translateY(8px); } }
+
+/* ---------- brand ---------- */
+.brand { text-align: center; margin-bottom: 22px; }
+.brand h1 {
+  font-family: 'Baloo 2', cursive;
+  font-size: clamp(2rem, 8vw, 2.9rem);
+  font-weight: 800;
+  margin: 0;
+  letter-spacing: -.5px;
+}
+.brand h1 span {
+  background: linear-gradient(100deg, var(--saffron), var(--gold));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.tag { color: var(--muted); font-size: .85rem; margin: 6px 0 0; }
+
+/* ---------- card ---------- */
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 22px;
+}
+.card.center { text-align: center; }
+.card h2 { font-family: 'Baloo 2', cursive; margin: 0 0 10px; font-size: 1.5rem; }
+.card p { color: var(--muted); font-size: .92rem; line-height: 1.55; }
+
+/* ---------- fields ---------- */
+.field { display: block; margin-bottom: 14px; }
+.field > span {
+  display: block;
+  font-size: .78rem;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+input, select {
+  width: 100%;
+  padding: 12px 14px;
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  color: var(--text);
+  font-size: 1rem;
+  font-family: inherit;
+}
+input:focus, select:focus { outline: 2px solid var(--saffron-dim); outline-offset: 1px; }
+#input-code { text-transform: uppercase; letter-spacing: .35em; font-weight: 600; }
+
+/* ---------- buttons ---------- */
+.btn {
+  width: 100%;
+  padding: 13px 16px;
+  border: 1px solid var(--line);
+  background: var(--bg-2);
+  color: var(--text);
+  border-radius: 10px;
+  font-size: .98rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: transform .12s ease, filter .12s ease;
+}
+.btn:hover:not(:disabled) { filter: brightness(1.15); }
+.btn:active:not(:disabled) { transform: scale(.985); }
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+.btn-primary {
+  background: linear-gradient(100deg, var(--saffron), var(--saffron-dim));
+  border-color: transparent;
+  color: #20140b;
+}
+.btn-ghost { background: transparent; border-color: transparent; color: var(--muted); }
+.btn-sm { padding: 9px; font-size: .85rem; margin-top: 8px; }
+
+.divider {
+  display: flex; align-items: center; gap: 10px;
+  color: var(--muted); font-size: .78rem; margin: 18px 0;
+}
+.divider::before, .divider::after {
+  content: ''; flex: 1; height: 1px; background: var(--line);
+}
+
+.error {
+  color: var(--red); font-size: .85rem; margin: 12px 0 0; text-align: center;
+}
+
+.settings { margin-top: 16px; }
+.settings summary {
+  cursor: pointer; color: var(--muted); font-size: .85rem; padding: 8px 0;
+}
+.settings[open] { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 12px 18px; }
+
+/* ---------- lobby ---------- */
+.roomcode {
+  font-family: 'Baloo 2', cursive;
+  font-size: 3.2rem;
+  font-weight: 800;
+  letter-spacing: .18em;
+  color: var(--gold);
+  margin: 4px 0 10px;
+}
+.muted { color: var(--muted); font-size: .88rem; }
+
+.players { margin: 18px 0; display: flex; flex-direction: column; gap: 8px; }
+.player {
+  display: flex; align-items: center; justify-content: space-between;
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 11px 14px;
+  font-weight: 600;
+}
+.player .dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--green); margin-right: 9px; flex: none;
+}
+.player .who { display: flex; align-items: center; }
+.player .pts { color: var(--gold); font-variant-numeric: tabular-nums; }
+.player.me { border-color: var(--saffron-dim); }
+
+/* ---------- game ---------- */
+.scorebar { display: flex; gap: 10px; margin-bottom: 12px; }
+.scorebar .player { flex: 1; }
+
+.timerbar {
+  height: 6px; background: var(--bg-2); border-radius: 99px;
+  overflow: hidden; margin-bottom: 16px;
+}
+#timer-fill {
+  height: 100%; width: 100%;
+  background: linear-gradient(90deg, var(--saffron), var(--gold));
+  transform-origin: left;
+}
+
+.qmeta {
+  font-size: .74rem; text-transform: uppercase; letter-spacing: .08em;
+  color: var(--muted); margin: 0 0 10px;
+}
+.question {
+  font-family: 'Baloo 2', cursive;
+  font-size: 1.32rem; line-height: 1.35;
+  margin: 0 0 20px;
+}
+
+.options { display: flex; flex-direction: column; gap: 10px; }
+.opt {
+  display: flex; align-items: center; gap: 12px;
+  width: 100%; text-align: left;
+  padding: 14px 16px;
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  color: var(--text);
+  font-size: .96rem; font-family: inherit; font-weight: 500;
+  cursor: pointer;
+  transition: border-color .15s ease, background .15s ease;
+}
+.opt:hover:not(:disabled) { border-color: var(--saffron-dim); }
+.opt:disabled { cursor: default; }
+.opt .key {
+  flex: none;
+  width: 26px; height: 26px;
+  display: grid; place-items: center;
+  border-radius: 7px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  font-size: .78rem; font-weight: 700;
+  color: var(--muted);
+}
+.opt.picked { border-color: var(--saffron); background: #33261c; }
+.opt.correct { border-color: var(--green); background: #16301f; }
+.opt.wrong { border-color: var(--red); background: #331a1a; }
+
+.feedback {
+  text-align: center; font-weight: 600; min-height: 1.4em;
+  margin: 16px 0 0; font-size: .92rem;
+}
+.feedback.good { color: var(--green); }
+.feedback.bad { color: var(--red); }
+
+/* ---------- results ---------- */
+.trophy { font-size: 3.4rem; line-height: 1; margin-bottom: 6px; }
+#result-title { font-size: 1.7rem; }
+
+code {
+  background: var(--bg-2); padding: 2px 6px; border-radius: 5px;
+  font-size: .88em; color: var(--gold);
+}

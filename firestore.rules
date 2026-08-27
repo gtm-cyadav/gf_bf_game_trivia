@@ -1,0 +1,30 @@
+rules_version = '2';
+
+// Paste this into Firebase console > Firestore Database > Rules > Publish.
+//
+// The game has no login, so any visitor can read and write a room document.
+// The constraints below keep that from turning into open storage: only the
+// `rooms` collection is reachable, documents must look like game rooms, and
+// they are only writable for 6 hours after creation.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    match /rooms/{code} {
+      allow read: if code.size() == 4;
+
+      allow create: if code.size() == 4
+                    && request.resource.data.keys().hasAll(['status', 'players', 'createdAt'])
+                    && request.resource.data.createdAt is number
+                    && request.resource.data.players.size() == 1
+                    && request.resource.size() < 40;
+
+      allow update, delete: if code.size() == 4
+                            && resource.data.createdAt is number
+                            && request.time.toMillis() - resource.data.createdAt < 6 * 60 * 60 * 1000;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

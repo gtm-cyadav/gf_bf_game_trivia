@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Desi Trivia Race</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="wrap">
+
+  <!-- ============ SETUP ============ -->
+  <section id="screen-setup" class="screen active">
+    <header class="brand">
+      <h1>Desi Trivia <span>Race</span></h1>
+      <p class="tag">Bollywood · Khaana · Hindi belt · Cricket · Desi internet</p>
+    </header>
+
+    <div class="card">
+      <label class="field">
+        <span>Your name</span>
+        <input id="input-name" type="text" maxlength="14" placeholder="e.g. Chetan" autocomplete="off">
+      </label>
+
+      <button id="btn-create" class="btn btn-primary">Create a room</button>
+
+      <div class="divider"><span>or</span></div>
+
+      <label class="field">
+        <span>Room code</span>
+        <input id="input-code" type="text" maxlength="4" placeholder="ABCD" autocomplete="off" spellcheck="false">
+      </label>
+      <button id="btn-join" class="btn">Join room</button>
+
+      <p id="setup-error" class="error" hidden></p>
+    </div>
+
+    <details class="settings">
+      <summary>Game settings (host only)</summary>
+      <label class="field">
+        <span>Number of questions</span>
+        <select id="input-rounds">
+          <option value="5">5</option>
+          <option value="10" selected>10</option>
+          <option value="15">15</option>
+          <option value="20">20</option>
+        </select>
+      </label>
+      <label class="field">
+        <span>Seconds per question</span>
+        <select id="input-timer">
+          <option value="10">10</option>
+          <option value="15" selected>15</option>
+          <option value="20">20</option>
+        </select>
+      </label>
+      <label class="field">
+        <span>Categories</span>
+        <select id="input-cat">
+          <option value="all" selected>Everything Indian</option>
+          <option value="bollywood">Bollywood only</option>
+          <option value="food">Food only</option>
+          <option value="states">States &amp; places</option>
+          <option value="cricket">Cricket only</option>
+          <option value="pop">Desi pop culture</option>
+        </select>
+      </label>
+    </details>
+  </section>
+
+  <!-- ============ LOBBY ============ -->
+  <section id="screen-lobby" class="screen">
+    <div class="card center">
+      <p class="muted">Room code</p>
+      <div class="roomcode" id="lobby-code">----</div>
+      <button id="btn-copy" class="btn btn-ghost btn-sm">Copy invite link</button>
+
+      <div class="players" id="lobby-players"></div>
+
+      <p class="muted" id="lobby-status">Waiting for your partner to join…</p>
+      <button id="btn-start" class="btn btn-primary" disabled>Start the race</button>
+      <button id="btn-leave" class="btn btn-ghost btn-sm">Leave room</button>
+    </div>
+  </section>
+
+  <!-- ============ GAME ============ -->
+  <section id="screen-game" class="screen">
+    <div class="scorebar" id="game-scores"></div>
+
+    <div class="timerbar"><div id="timer-fill"></div></div>
+
+    <div class="card">
+      <p class="qmeta"><span id="q-counter">Q1</span> · <span id="q-cat">bollywood</span></p>
+      <h2 class="question" id="q-text">…</h2>
+      <div class="options" id="q-options"></div>
+      <p class="feedback" id="q-feedback"></p>
+    </div>
+  </section>
+
+  <!-- ============ RESULTS ============ -->
+  <section id="screen-results" class="screen">
+    <div class="card center">
+      <div class="trophy" id="result-emoji">🏆</div>
+      <h2 id="result-title">…</h2>
+      <div class="players" id="result-players"></div>
+      <button id="btn-again" class="btn btn-primary">Play again</button>
+      <button id="btn-home" class="btn btn-ghost btn-sm">Back to start</button>
+    </div>
+  </section>
+
+  <!-- ============ CONFIG WARNING ============ -->
+  <section id="screen-config" class="screen">
+    <div class="card">
+      <h2>Almost there</h2>
+      <p>This game needs a free Firebase project to sync between two devices.</p>
+      <p>Open <code>firebase-config.js</code> and paste in your project's config. Full steps are in <code>README.md</code>.</p>
+    </div>
+  </section>
+
+</div>
+
+<script src="questions.js"></script>
+<script type="module" src="app.js"></script>
+</body>
+</html>
