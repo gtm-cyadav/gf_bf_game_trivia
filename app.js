@@ -11,6 +11,10 @@ const FIRST_BONUS = 50;
 
 const $ = (id) => document.getElementById(id);
 
+const reactionLayer = document.createElement('div');
+reactionLayer.className = 'reaction-layer';
+document.body.appendChild(reactionLayer);
+
 const state = {
   db: null,
   code: null,
@@ -280,6 +284,7 @@ function currentQuestion() {
 }
 
 function paintQuestion() {
+  clearReactionLayer();
   const room = state.room;
   const q = currentQuestion();
 
@@ -298,6 +303,48 @@ function paintQuestion() {
   $('q-options').querySelectorAll('.opt').forEach((btn) => {
     btn.addEventListener('click', () => submitAnswer(Number(btn.dataset.i)));
   });
+}
+
+function clearReactionLayer() {
+  reactionLayer.innerHTML = '';
+}
+
+function emitReaction(kind) {
+  clearReactionLayer();
+  const count = kind === 'love' ? 18 : 12;
+  const fragment = document.createDocumentFragment();
+
+  if (kind === 'love') {
+    for (let i = 0; i < count; i++) {
+      const heart = document.createElement('span');
+      heart.className = 'reaction reaction-love';
+      heart.textContent = '❤';
+      heart.style.left = `${18 + Math.random() * 64}%`;
+      heart.style.setProperty('--dx', `${(Math.random() - 0.5) * 120}px`);
+      heart.style.setProperty('--dy', `${Math.random() * 80 + 10}px`);
+      heart.style.setProperty('--dx2', `${(Math.random() - 0.5) * 170}px`);
+      heart.style.fontSize = `${14 + Math.random() * 20}px`;
+      heart.style.animationDelay = `${i * 0.04}s`;
+      fragment.appendChild(heart);
+    }
+  } else {
+    const splash = document.createElement('span');
+    splash.className = 'reaction reaction-water';
+    fragment.appendChild(splash);
+
+    for (let i = 0; i < count; i++) {
+      const tear = document.createElement('span');
+      tear.className = 'reaction reaction-tear';
+      tear.textContent = Math.random() > 0.5 ? '😢' : '😭';
+      tear.style.left = `${18 + Math.random() * 64}%`;
+      tear.style.setProperty('--drift', `${(Math.random() - 0.5) * 90}px`);
+      tear.style.animationDelay = `${i * 0.06}s`;
+      fragment.appendChild(tear);
+    }
+  }
+
+  reactionLayer.appendChild(fragment);
+  window.setTimeout(clearReactionLayer, kind === 'love' ? 1800 : 2200);
 }
 
 async function submitAnswer(choice) {
@@ -342,14 +389,17 @@ function paintReveal() {
   if (!mine) {
     fb.textContent = 'Out of time!';
     fb.className = 'feedback bad';
+    emitReaction('sad');
   } else if (mine.correct) {
     const others = Object.entries(answers).filter(([pid]) => pid !== state.pid);
     const beatThem = others.every(([, a]) => !a.correct || a.ms > mine.ms);
     fb.textContent = beatThem ? `Correct — and fastest! (${(mine.ms / 1000).toFixed(1)}s)` : `Correct! (${(mine.ms / 1000).toFixed(1)}s)`;
     fb.className = 'feedback good';
+    emitReaction('love');
   } else {
     fb.textContent = 'Not quite.';
     fb.className = 'feedback bad';
+    emitReaction('sad');
   }
 
   $('timer-fill').style.transform = 'scaleX(0)';
